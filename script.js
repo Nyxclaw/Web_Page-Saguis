@@ -6,6 +6,7 @@ const catComment=document.getElementById("catComment");
 const pawBurst=document.getElementById("pawBurst");
 const selectedDatePreview=document.getElementById("selectedDatePreview");
 const finalDate=document.getElementById("finalDate");
+const whatsappBtn = document.getElementById("whatsappBtn");
 
 let noAttempts=0;
 let selectedDate="";
@@ -60,6 +61,25 @@ function handleNoAttempt(){
   showScreen("decline");
 }
 
+function updateWhatsappLink() {
+  const phoneNumber = "5213787080031";
+
+  let message = "";
+
+  if (selectedDate === "Otro día") {
+    message =
+      "Sí quiero salir contigo 🐾\n" +
+      "Pero me funciona mejor otro día. Lo vemos por aquí ☕";
+  } else {
+    message =
+      "Acepto la invitación 🐾\n" +
+      `${selectedDate} en Gonda ☕`;
+  }
+
+  whatsappBtn.href =
+    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+}
+
 document.addEventListener("click",e=>{
   const action=e.target.closest("[data-action]")?.dataset.action;
   const dateChoice=e.target.closest("[data-date]")?.dataset.date;
@@ -78,6 +98,9 @@ document.addEventListener("click",e=>{
   else if(action==="no") handleNoAttempt();
   else if(action==="confirm-place"){
     finalDate.textContent=selectedDate==="Otro día"?"Fecha por elegir juntos":selectedDate||"Fecha por confirmar";
+
+    updateWhatsappLink();
+
     runHappyAnimation(); setTimeout(()=>showScreen("final"),350);
   }
   else if(action==="restart"){selectedDate="";resetNoButton();showScreen("intro");}
